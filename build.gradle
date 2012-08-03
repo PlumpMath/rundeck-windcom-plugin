@@ -1,0 +1,43 @@
+defaultTasks 'clean','build'
+
+apply plugin: 'java'
+
+rundeckPluginVersion='1.0'
+pluginClassNames='com.dtolabs.rundeck.plugin.windcom.WinDCOMFileCopier,com.dtolabs.rundeck.plugin.windcom.WinDCOMNodeExecutor'
+rundeckVersion='1.4.4-dev'
+
+configurations{
+    //declare custom pluginLibs configuration to include only libs for this plugin
+    pluginLibs 
+    
+    //declare compile to extend from pluginLibs so it inherits the dependencies
+    compile{
+        extendsFrom pluginLibs
+    }
+}
+dependencies {
+    //add lib/*.jar files to pluginLibs
+    pluginLibs fileTree(dir: 'lib', include: '*.jar', exclude: 'rundeck-core-*.jar')
+    compile files('lib/rundeck-core-' + rundeckVersion + '.jar')
+}
+
+// task to copy plugin libs to output/lib dir
+task copyToLib(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.pluginLibs
+}
+
+jar {
+    //include contents of output dir
+    from "$buildDir/output"
+
+    manifest {
+        //create space-separated list of pluginLibs
+        def libList = configurations.pluginLibs.collect{relativePath(it).replaceAll('\\\\','/')}.join(' ')
+
+        attributes 'Rundeck-Plugin-Version': rundeckPluginVersion, 'Rundeck-Plugin-Archive': 'true', 'Rundeck-Plugin-Classnames': pluginClassNames, 'Rundeck-Plugin-Libs': "${libList}"
+    }
+}
+
+//set jar task to depend on copyToLib
+jar.dependsOn(copyToLib)
