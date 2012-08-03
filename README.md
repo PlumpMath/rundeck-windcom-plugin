@@ -14,8 +14,35 @@ Copy the `rundeck-dcom-plugin-1.0.jar` to the `libext/` directory for Rundeck.
 Configure The Plugin
 ====
 
+Generate the encrypted password:
+
+     [rundeck@centos62 libext]$ java -classpath rundeck-windcom-plugin.jar com.dtolabs.rundeck.plugin.windcom.CryptUtil /tmp/key.file Administrator '!1qazxsw2@'
+
+     [INFO]: file: "/tmp/key.file" created.
+     
+     [INFO]: place the following in your project "resource.xml" file:
+     <node ... key-file-path="/tmp/key.file"
+               username="Administrator"
+               password="tIt3fAtgAgLjY7CcIJMVwHIikwiA/WP1CBcPM9qAwbw=" .../>
+     
+     <?xml version="1.0" encoding="UTF-8"?>
+
+Setup the node entry:
+
+     <project>
+       <node name="localhost" description="Rundeck server node" tags="" hostname="localhost" osArch="amd64" osFamily="unix" osName="Linux" osVersion="2.6.32-220.el6.x86_64" username="rundeck"/>
+       <node name="win2008" description="Windows 2008 server node" tags="" hostname="win2008" osArch="" osFamily="" osName="" osVersion="" username="Administrator" domain="win2008" password="tIt3fAtgAgLjY7CcIJMVwHIikwiA/WP1CBcPM9qAwbw=" key-file-path="/tmp/key.file"/>
+     </project>
+
 Configure a Windows Server for DCOM 
 ====
+
+Enabling DCOM access varies depending on the version of Windows you're using. This [Technet article][1] applies to the more recent releases. This article on [Configuring DCOM for Remote Access][2] outlines the various authentication levels and security permissions that have to be set.
+
+
+
+[1]: http://technet.microsoft.com/en-us/library/cc771387.aspx
+[2]: http://j-integra.intrinsyc.com/support/com/doc/remoteaccess.html
 
 Build
 =====
