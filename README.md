@@ -4,7 +4,7 @@ Rundeck DCOM Plugin
 This is a [Rundeck Node Execution plugin][1] that uses DCOM to connect to Windows and execute commands.  It uses [j-Interop][2] to provide the DCOM implementation.
 
 [1]: http://rundeck.org/docs/manual/plugins.html#node-execution-plugins
-[2]: //http://j-interop.org
+[2]: http://j-interop.org
 
 Install
 ====
