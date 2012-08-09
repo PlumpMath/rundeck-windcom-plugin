@@ -1,10 +1,13 @@
 Rundeck DCOM Plugin
 --------------------
 
-This is a [Rundeck Node Execution plugin][1] that uses DCOM to connect to Windows and execute commands.  It uses [j-Interop][2] to provide the DCOM implementation.
+This is a [Rundeck Node Execution plugin][1] that uses DCOM to connect to Windows and execute commands.  The plugin is based on the [j-Interop][2] open source library making cross-platform operations possible (i.e. you can run commands on Windows boxes from a non-Windows Rundeck server).
+
+The NodeExecutor service is implemented using the WshShell (WScript.Shell) Windows Script Host (WSH) COM object's Exec method to [run Windows programs][3], capture their output and error streams and report their exit code.
 
 [1]: http://rundeck.org/docs/manual/plugins.html#node-execution-plugins
 [2]: http://j-interop.org
+[3]: http://technet.microsoft.com/en-us/library/ee156605.aspx
 
 Install
 ====
